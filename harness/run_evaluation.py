@@ -1,7 +1,6 @@
 import argparse
 import datasets
 import json
-import logging
 import os
 import shutil
 
@@ -15,10 +14,6 @@ from engine_evaluation import main as eval_engine
 from multiprocessing import Pool
 from utils import get_instances
 
-# logging.basicConfig(
-#     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-# )
-# logger = logging.getLogger("run_evaluation")
 from loguru import logger
 
 

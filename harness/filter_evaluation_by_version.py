@@ -11,14 +11,9 @@ from constants import (
     KEY_PREDICTION,
 )
 from datasets import load_dataset
-from engine_evaluation import main as eval_engine
-from multiprocessing import Pool
 from utils import get_instances
 
-# logging.basicConfig(
-#     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-# )
-# logger = logging.getLogger("run_evaluation")
+
 from loguru import logger
 
 
@@ -176,8 +171,6 @@ def main(
                             f"[{model}/{repo}/{version}] # of predictions to evaluate: {len(repo_version_predictions)}")
                     
                     json.dump(repo_version_predictions, f, indent=4)
-                    import pdb;
-                    pdb.set_trace()
                     args.predictions_path = file_path
                     
                     eval_args.append(args)
