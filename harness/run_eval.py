@@ -14,6 +14,7 @@ try:
                 "--testbed", "/repos",
                 "--venv", "scikit-learn__scikit-learn__0.22",
                 "--timeout", "900",
+                "--num_workers", "1",
                 "--path_conda", "/data/conda"
                 ]
     # 执行脚本

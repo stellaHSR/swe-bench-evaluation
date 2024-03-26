@@ -224,8 +224,10 @@ class TestbedContextManager:
         distributed_tasks = []
         for repo, map_version_to_instances in self.task_instances_grouped.items():
             repo_prefix = repo.replace("/", "__")
+
             for version, instances in map_version_to_instances.items():
                 env_name = f"{repo_prefix}__{version}"
+                print(env_name)
                 task_set = {
                     "conda_path": self.path_conda,
                     "log_dir": self.log_dir,
@@ -393,7 +395,9 @@ class TaskEnvContextManager:
             version = instance["version"] if "version" in instance else None
             repo_prefix = repo.replace("/", "__")
             env_name = f"{repo_prefix}__{version}"
-    
+            target_dir = f"/home/{bc}"
+            if not os.path.exists(target_dir):
+                self.copy_repo(source_path="/repos/scikit-learn__scikit-learn__0.20", destination_path=target_dir)
             os.chdir(os.path.join(f"/home/{bc}", env_name))
             logger_taskenv.info(os.getcwd())
             # Remove all paths in .gitignore
