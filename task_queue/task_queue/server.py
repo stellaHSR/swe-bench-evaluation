@@ -17,8 +17,7 @@ from celery.result import AsyncResult
 
 app = FastAPI()
 
-redis_client = Redis(host='192.168.50.74', port=32582, db=15, password="Onelawgpt321!")
-
+redis_client = Redis(host="localhost", port=6379, db=0)
 
 class TaskInput(BaseModel):
     """input for task creation"""

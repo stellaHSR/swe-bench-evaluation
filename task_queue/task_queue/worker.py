@@ -13,9 +13,9 @@ from celery import Celery
 # from metrics.report import get_model_report
 
 # 配置 Celery 使用 Redis 作为消息代理
-app = Celery('tasks', broker='redis://:Onelawgpt321!@192.168.50.74:32582/15', backend='redis://:Onelawgpt321!@192.168.50.74:32582/15')
+app = Celery('tasks', broker='redis://lcoalhost:6379/0', backend='redis://lcoalhost:6379/0')
 # 创建Redis连接（用于直接操作Redis）
-redis_client = redis.Redis(host='192.168.50.74', port=32582, db=15, password='Onelawgpt321!')
+redis_client = redis.Redis(host="localhost", port=6379, db=0)
 
 import runpy
 import sys

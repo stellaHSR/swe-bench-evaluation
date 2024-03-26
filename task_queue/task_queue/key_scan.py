@@ -5,8 +5,7 @@ import redis
 import json
 
 # 创建Redis连接
-redis_client = redis.Redis(host='192.168.50.74', port=32582, password='Onelawgpt321!')
-
+redis_client = redis.Redis(host="localhost", port=6379, db=0)
 # 自定义键模式，如果你更改了Celery配置
 custom_pattern = 'celery-task-meta-*'  # 根据需要调整这里
 
