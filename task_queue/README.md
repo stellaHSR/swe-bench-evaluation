@@ -19,7 +19,7 @@ pip install fastapi uvicorn celery[redis] redis
 注意：在运行 celery 之前，确保你已经安装了 Redis 并且 Redis 服务已经启动。（`redis-server /usr/local/etc/redis.conf`）
 
 ```bash
-celery -A queue_task.celery_worker.app worker --loglevel=info --concurrency=1
+celery -A task_queue.worker.app worker --loglevel=info --concurrency=1
 ```
 
 ### 3. 创建 FastAPI 应用
@@ -27,7 +27,7 @@ celery -A queue_task.celery_worker.app worker --loglevel=info --concurrency=1
 然后，在另一个终端，启动 FastAPI 应用：
 
 ```bash
-uvicorn queue_task.fastapi_server:app --reload
+uvicorn task_queue.server:app --reload
 ```
 
 ## 使用方法
@@ -36,3 +36,5 @@ uvicorn queue_task.fastapi_server:app --reload
 2. 通过向 `/tasks/{task_id}` 发送 GET 请求来获取任务状态和结果
 3. 通过向 `/tasks/` 发送 GET 请求来获取所有任务的状态和结果
 4. 通过向 `/tasks/` 发送 DELETE 请求来删除所有任务
+
+具体的，可以使用 `test.sh` 进行 curl的尝试，也可以使用 `task_queue.client` 进行代码的调用测试
