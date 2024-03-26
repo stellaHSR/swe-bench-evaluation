@@ -17,4 +17,4 @@ def execute_task(x):
     # 模拟一个耗时的计算任务
     import time
     time.sleep(5)
-    return x * x
+    return (x, x * x)
