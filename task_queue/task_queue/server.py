@@ -22,7 +22,7 @@ redis_client = Redis(host='localhost', port=6379, db=0)
 
 class TaskInput(BaseModel):
     """input for task creation"""
-    operation: str
+    func: str
     data: dict
 
 
@@ -31,14 +31,14 @@ class TaskQueueServerImp(BaseTaskQueue):
 
     def add_task(self, task_input: TaskInput):
         """create task based on input"""
-        if task_input.operation == "square":
+        if task_input.func == "square":
             x = task_input.data.get("x")
             if x is None:
                 raise HTTPException(status_code=400, detail="Missing 'x' in data")
             task = execute_task.delay(x)
             return {"task_id": task.id}
         else:
-            raise HTTPException(status_code=400, detail=f"Unsupported operation: {task_input.operation}")
+            raise HTTPException(status_code=400, detail=f"Unsupported func: {task_input.func}")
 
     def get_task_status(self, task_id: str):
         """get task based on task_id"""

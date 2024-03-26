@@ -45,7 +45,7 @@ class TaskQueueClientImp(BaseTaskQueue):
 if __name__ == '__main__':
     client = TaskQueueClientImp(API_BASE_URL)
     print(client.list_tasks())
-    print(client.add_task({"operation": "square", "data": {"x": 10}}))
+    print(client.add_task({"func": "square", "data": {"x": 10}}))
     print(client.list_tasks())
     print(client.get_task_status("1"))
     print(client.clear_tasks())
