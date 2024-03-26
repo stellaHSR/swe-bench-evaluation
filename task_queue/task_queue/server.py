@@ -17,7 +17,7 @@ from celery.result import AsyncResult
 
 app = FastAPI()
 
-redis_client = Redis(host='localhost', port=6379, db=0)
+redis_client = Redis(host='192.168.50.74', port=32582, db=15, password="Onelawgpt321!")
 
 
 class TaskInput(BaseModel):
@@ -47,13 +47,32 @@ class TaskQueueServerImp(BaseTaskQueue):
             return {"status": task_result.status, "result": task_result.result}
         else:
             return {"status": task_result.status}
-
+    
+    def list_keys(self):
+        custom_pattern = 'celery-task-meta-*'  # 根据需要调整这里
+    
+        # 初始化游标
+        cursor = 0
+    
+        # 存储匹配到的键
+        keys_found = []
+    
+        # 使用SCAN命令迭代查找匹配的键
+        while True:
+            cursor, keys = redis_client.scan(cursor=cursor, match=custom_pattern, count=1000)
+            keys_found.extend(keys)
+            # 如果游标返回0，说明迭代结束
+            if cursor == 0:
+                break
+        print(keys_found)
+        return keys_found
+    
     def list_tasks(self):
         # 注意: 这里使用的键模式 'celery-task-meta-*' 是基于 Celery 默认配置的
         # 如果你修改了 Celery 的任务结果存储键的模式，你需要相应地更新这里
-        keys = redis_client.keys('celery-task-meta-*')
+        keys_found = self.list_keys()
         tasks = []
-        for key in keys:
+        for key in keys_found:
             # 获取任务结果
             task_result_raw = redis_client.get(key)
             if task_result_raw:

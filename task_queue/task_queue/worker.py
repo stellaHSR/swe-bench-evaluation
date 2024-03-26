@@ -6,23 +6,65 @@
 @File    : worker.py
 """
 import os
+import redis
 import subprocess
 from celery import Celery
 
-from metrics.report import get_model_report
+# from metrics.report import get_model_report
 
 # 配置 Celery 使用 Redis 作为消息代理
-app = Celery('tasks', broker='redis://localhost:6379/0', backend='redis://localhost:6379/0')
+app = Celery('tasks', broker='redis://:Onelawgpt321!@192.168.50.74:32582/15', backend='redis://:Onelawgpt321!@192.168.50.74:32582/15')
+# 创建Redis连接（用于直接操作Redis）
+redis_client = redis.Redis(host='192.168.50.74', port=32582, db=15, password='Onelawgpt321!')
 
+import runpy
+import sys
+
+from loguru import logger
 
 @app.task
 def execute_task(x):
-    # 模拟一个耗时的计算任务
+    print("Run bash")
     import time
     time.sleep(5)
-    os.chdir("/evaluation/harness")
-    os.system(". run_eval.sh")
-    # result = get_model_report(model="", predictions_path="", swe_bench_tasks="", log_dir="")
-    # todo update result to redis
-    # return result
-    return x
+    try:
+        # 切换到脚本所在的目录
+        os.chdir("/evaluation/harness")
+        # # 使用subprocess.run代替os.system更安全地执行命令
+        # result = subprocess.run(["./run_eval.sh"], capture_output=True, text=True, check=True)
+        #
+        # # 假设脚本的输出是我们需要的结果，你可以根据需要调整
+        # output = result.stdout
+        logger.info(f"enter evaluation dir {os.getcwd()}")
+        original_argv = sys.argv.copy()
+
+        try:
+            # 设置你想要传递给脚本的命令行参数
+            sys.argv = ["local_engine_evaluation.py", "--predictions_path",
+                        f"/evaluation/predictions/result.json",
+                        "--log_dir", "/evaluation/log",
+                        "--testbed", "/repos",
+                        "--venv", "scikit-learn__scikit-learn__0.22",
+                        "--timeout", "900",
+                        "--instance_id", "scikit-learn__scikit-learn-11578",
+                        "--path_conda", "/data/conda"
+                        ]
+            # 执行脚本
+            runpy.run_path(path_name="local_engine_evaluation.py", run_name="__main__")
+            logger.info("start run")
+        finally:
+            # 恢复原始的sys.argv以避免对后续代码的潜在影响
+            sys.argv = original_argv
+        
+        # 模拟结果更新到Redis
+        # 这里假设x是任务的唯一标识符，可以根据实际情况调整键名
+        redis_key = f"task-result:{x}"
+        # redis_client.set(redis_key, output)
+        
+        # 返回一个结果标识符，客户端可以用它来查询具体结果
+        return redis_key
+    except subprocess.CalledProcessError as e:
+        # 如果脚本执行失败，返回错误信息
+        print(e.output)
+        return {"error": "脚本执行失败"}
+

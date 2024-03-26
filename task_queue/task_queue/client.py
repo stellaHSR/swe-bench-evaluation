@@ -7,7 +7,7 @@
 """
 
 import requests
-from task_queue.model import BaseTaskQueue
+from task_queue.task_queue.model import BaseTaskQueue
 
 
 API_BASE_URL = "http://localhost:8000"
@@ -46,6 +46,6 @@ if __name__ == '__main__':
     client = TaskQueueClientImp(API_BASE_URL)
     # print(client.clear_tasks())
     print(client.list_tasks())
-    print(client.add_task({"func": "square", "data": {"x": 10}}))
-    print(client.list_tasks())
-    print(client.get_task_status("1"))
+    # print(client.add_task({"func": "square", "data": {"x": 10}}))
+    # print(client.list_tasks())
+    # print(client.get_task_status("1"))
