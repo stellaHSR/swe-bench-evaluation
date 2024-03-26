@@ -13,10 +13,10 @@ cd "$WORKDIR"
 
 # 启动 FastAPI 应用，输出重定向到 fastapi.log
 echo "Starting FastAPI app..."
-nohup uvicorn main:app --host 0.0.0.0 --port 8000 > fastapi.log 2>&1 &
+nohup uvicorn server:app --host 0.0.0.0 --port 8000 > fastapi.log 2>&1 &
 
 # 启动 Celery worker，输出重定向到 celery.log
 echo "Starting Celery worker..."
-nohup celery -A celery_worker.app worker --loglevel=info > celery.log 2>&1 &
+nohup celery -A worker.app worker --loglevel=info > celery.log 2>&1 &
 
 echo "Services started."
