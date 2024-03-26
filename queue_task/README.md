@@ -32,6 +32,7 @@ uvicorn queue_task.fastapi_server:app --reload
 
 ## 使用方法
 
-可以通过向 `/tasks/` 发送 POST 请求来创建新任务，并通过向 `/tasks/{task_id}` 发送 GET 请求来获取任务状态和结果。
-
-这只是一个基本的例子，你可以根据需求进行扩展，比如增加任务参数的验证、使用不同的后端服务、添加身份验证等。
+1. 通过向 `/tasks/` 发送 POST 请求来创建新任务
+2. 通过向 `/tasks/{task_id}` 发送 GET 请求来获取任务状态和结果
+3. 通过向 `/tasks/` 发送 GET 请求来获取所有任务的状态和结果
+4. 通过向 `/tasks/` 发送 DELETE 请求来删除所有任务
