@@ -3,7 +3,7 @@
 """
 @Time    : 2024/3/25 19:48
 @Author  : alexanderwu
-@File    : celery_worker.py
+@File    : worker.py
 """
 
 from celery import Celery
