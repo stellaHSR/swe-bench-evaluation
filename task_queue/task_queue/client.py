@@ -48,5 +48,5 @@ if __name__ == '__main__':
     print(client.add_task({"func": "square", "data": {"x": 10}}))
     print(client.list_tasks())
     print(client.get_task_status("1"))
-    print(client.clear_tasks())
-    print(client.list_tasks())
+    # print(client.clear_tasks())
+    # print(client.list_tasks())
